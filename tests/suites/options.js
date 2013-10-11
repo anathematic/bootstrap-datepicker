@@ -334,6 +334,27 @@ test('Clear Button: hides datepicker if autoclose is on', function(){
 
 });
 
+test('datesOfMonthAvailable', function(){
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2012-10-26')
+                .datepicker({
+                  format: 'yyyy-mm-dd',
+                  datesOfMonthAvailable: ['2012-10-22', '2012-10-26']
+                }),
+        dp = input.data('datepicker'),
+        picker = dp.picker,
+        target;
+
+    input.focus();
+    target = picker.find('.datepicker-days tbody td:nth(21)');
+    ok(target.hasClass('unavailable'), 'Day of week is unavailable');
+    target = picker.find('.datepicker-days tbody td:nth(22)');
+    ok(!target.hasClass('unavailable'), 'Day of week is available');
+    target = picker.find('.datepicker-days tbody td:nth(23)');
+    ok(target.hasClass('unavailable'), 'Day of week is unavailable');
+})
+
 test('DaysOfWeekDisabled', function(){
     var input = $('<input />')
                 .appendTo('#qunit-fixture')

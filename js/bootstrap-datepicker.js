@@ -164,7 +164,9 @@
 				}
 			}
 
+			o.datesOfMonthAvailable = o.datesOfMonthAvailable||[];
 			o.daysOfWeekDisabled = o.daysOfWeekDisabled||[];
+
 			if (!$.isArray(o.daysOfWeekDisabled))
 				o.daysOfWeekDisabled = o.daysOfWeekDisabled.split(/[,\s]*/);
 			o.daysOfWeekDisabled = $.map(o.daysOfWeekDisabled, function (d) {
@@ -555,6 +557,7 @@
 				year = this.viewDate.getUTCFullYear(),
 				month = this.viewDate.getUTCMonth(),
 				currentDate = this.date.valueOf(),
+				formattedDate = (date.getUTCFullYear() + "-" + (date.getUTCMonth() + 1) + "-" + date.getUTCDate()),
 				today = new Date();
 			if (date.getUTCFullYear() < year || (date.getUTCFullYear() == year && date.getUTCMonth() < month)) {
 				cls.push('old');
@@ -571,10 +574,19 @@
 			if (date.valueOf() == currentDate) {
 				cls.push('active');
 			}
-			if (date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
-				$.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1) {
-				cls.push('disabled');
-			}
+
+      if (date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
+       $.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1) {
+       cls.push('disabled');
+      }
+
+      if (this.o.datesOfMonthAvailable.length > 0) {
+        if ($.inArray(formattedDate.toString(), this.o.datesOfMonthAvailable) === -1) {
+          cls.push('unavailable');
+          cls.push('disabled');
+        }
+      }
+
 			if (this.range){
 				if (date > this.range[0] && date < this.range[this.range.length-1]){
 					cls.push('range');
@@ -1140,6 +1152,7 @@
 		calendarWeeks: false,
 		clearBtn: false,
 		daysOfWeekDisabled: [],
+		datesOfMonthAvailable: [],
 		endDate: Infinity,
 		forceParse: true,
 		format: 'mm/dd/yyyy',

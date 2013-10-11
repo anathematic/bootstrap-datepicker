@@ -106,6 +106,12 @@
 		&.new {
 			color: @grayLight;
 		}
+		&.unavailable,
+		&.unavailable:hover {
+		  background: @grayLighter;
+			color: @grayLight;
+			cursor: default;
+		}
 		&.disabled,
 		&.disabled:hover {
 			background: none;
